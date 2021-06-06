@@ -37,14 +37,14 @@ async function main (data, isRenderLocal = false) {
     .sendMail({
       from: 'Scrapper 👻',
       to: 'oo15004@ues.edu.sv',
-      subject: 'Movimiento detectado 🎉',
+      subject: `${
+        isRenderLocal ? '🎉 Movimiento local detectado 🎉' : 'Movimiento extranjero detectado 👾'
+      }`,
       text: 'Movimiento detectado',
       html
     })
     .then(result => console.log(result))
     .catch(error => console.log(error))
 }
-
-main().catch(console.error)
 
 module.exports = main
