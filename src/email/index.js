@@ -36,7 +36,7 @@ async function main (data, isRenderLocal = false) {
   transporter
     .sendMail({
       from: 'Scrapper 👻',
-      to: 'oo15004@ues.edu.sv',
+      to: 'camarognu@gmail.com',
       subject: `${
         isRenderLocal ? '🎉 Movimiento local detectado 🎉' : 'Movimiento extranjero detectado 👾'
       }`,
