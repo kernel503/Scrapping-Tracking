@@ -18,6 +18,7 @@
     "jsdom": "^16.6.0",
     "monk": "^7.3.4",
     "monk-middleware-wrap-non-dollar-update": "^0.2.1",
-    "nodemailer": "^6.6.1"
+    "nodemailer": "^6.6.1",
+    "telegraf": "^4.3.0"
   }
 }

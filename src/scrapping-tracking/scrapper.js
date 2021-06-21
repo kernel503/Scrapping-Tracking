@@ -11,10 +11,9 @@ async function getTrackInformation (trackId) {
     const dom = new JSDOM(data)
     const $ = selector => dom.window.document.querySelector(selector)
     const textarea = JSON.parse($('#waybill_list_val_box').textContent.trim())
-    cainiao = textarea.data[0].section2.detailList.map(element => {
-      const { desc, status, time } = element
-      return { desc, status, time: time.slice(0, 10) }
-    })
+    cainiao = textarea.data[0].section2.detailList.map(
+      ({ desc, status, time }) => ({ desc, status, time: time.slice(0, 10) })
+    )
   }
 
   let correosv = []

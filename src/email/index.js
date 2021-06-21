@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer')
 
 async function main (data, isRenderLocal = false) {
   const divCainiao = data.cainiao.reduce((accum, current, index) => {
-    accum += `<li>${current.time} - ${current.desc} (${current.desc})</li>`
+    accum += `<li>${current.time} - ${current.desc} (${current.status})</li>`
     if (index === data.cainiao.length - 1) {
       accum += '</ul></div>'
     }
@@ -11,7 +11,7 @@ async function main (data, isRenderLocal = false) {
   }, '<div><b>Movimiento extranjero</b><ul>')
 
   const divCorreosv = data.correosv.reduce((accum, current, index) => {
-    accum += `<li>${current.time} - ${current.desc} (${current.desc})</li>`
+    accum += `<li>${current.time} - ${current.desc} (${current.status})</li>`
     if (index === data.correosv.length - 1) {
       accum += '</ul></div>'
     }

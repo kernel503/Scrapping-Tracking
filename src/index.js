@@ -1,6 +1,6 @@
 require('dotenv').config()
 const getTrackInformation = require('./scrapping-tracking/scrapper')
-const main = require('./email')
+const main = require('./telegrafBot')
 
 const url = process.env.MONGO_URI || 'NOT FOUND'
 const db = require('monk')(url)
@@ -12,30 +12,27 @@ async function getData () {
     const { _id, ...items } = currentTrackInMongo
 
     const currentTrackOnline = await Promise.all(
-      Object.keys(items).map(async track => {
-        const result = await getTrackInformation(track)
-        return result
-      })
+      Object.keys(items).map(async track => await getTrackInformation(track))
     )
 
-    currentTrackOnline.forEach(currentValueOnline => {
+    for (let currentValueOnline of currentTrackOnline) {
       const [key] = Object.keys(currentValueOnline)
 
       if (
         currentValueOnline[key].correosv.length > items[key].correosv.length
       ) {
-        console.log('Enviar msj local. ', key)
         const data = { ...items[key], ...currentValueOnline[key] }
-        main(data, true)
+        const target = key + ' - ' + items[key].name
+        await main(target, data, true)
       }
 
       if (
         !currentValueOnline[key].correosv.length &&
         currentValueOnline[key].cainiao.length > items[key].cainiao.length
       ) {
-        console.log('Enviar msj extranjero. ', key)
         const data = { ...items[key], ...currentValueOnline[key] }
-        main(data)
+        const target = key + ' - ' + items[key].name
+        await main(target, data)
       }
 
       if (
@@ -47,10 +44,9 @@ async function getData () {
       if (currentValueOnline[key].cainiao.length > items[key].cainiao.length) {
         items[key].cainiao = currentValueOnline[key].cainiao
       }
-    })
-
-    const update = await collection.update(_id, { $set: { ...items } })
-    console.log('Elementos actualizados. ', update)
+    }
+    await collection.update(_id, { $set: { ...items } })
+    console.log('Proceso terminado.')
   } catch (error) {
     console.log(error)
   }
