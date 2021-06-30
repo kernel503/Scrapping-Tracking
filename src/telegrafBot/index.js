@@ -7,7 +7,7 @@ const sendMessage = async list => {
   let index = 1
   for (let state of list) {
     await bot.telegram.sendMessage(
-      '696238891',
+      process.env.BOT_ID,
       `${index}. ${state.time} - ${state.desc} (${state.status})`
     )
     index++
@@ -16,17 +16,20 @@ const sendMessage = async list => {
 
 async function main (target, data, isRenderLocal = false) {
   if (isRenderLocal) {
-    await bot.telegram.sendMessage('696238891', 'Movimiento local detectado 🎉')
-    await bot.telegram.sendMessage('696238891', target)
-    await sendMessage(data.correosv)
-  } else {
     await bot.telegram.sendMessage(
-      '696238891',
-      'Movimiento extranjero detectado 👾'
-      )
-      await bot.telegram.sendMessage('696238891', target)
-      await sendMessage(data.cainiao)
+      process.env.BOT_ID,
+      'Movimiento local detectado 🎉'
+    )
+    await bot.telegram.sendMessage(process.env.BOT_ID, target)
+    await sendMessage(data.correosv)
+    return
   }
+  await bot.telegram.sendMessage(
+    process.env.BOT_ID,
+    'Movimiento extranjero detectado 👾'
+  )
+  await bot.telegram.sendMessage(process.env.BOT_ID, target)
+  await sendMessage(data.cainiao)
 }
 
 module.exports = main
